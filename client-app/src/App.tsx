@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
 
 function App() {
+
+  const [activities, Setactivities] = useState([])
+
+  useEffect(() => 
+  {
+    axios.get('http://localhost:5000/api/Activities')
+    .then(response =>
+      {
+        console.log(response);
+        Setactivities(response.data);
+      })
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Persistence;
 using Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
+const string CORSPolicy = "CorsPolicy";
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -14,8 +14,16 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("Default") ?? "Data Source=diathesea.db";
 builder.Services.AddSqlite<DataContext>(connectionString);
 
+builder.Services.AddCors(opt => 
+            {
+                opt.AddPolicy(CORSPolicy, policy => 
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                });
+            });
 
 var app = builder.Build();
+app.UseCors(CORSPolicy);
 
 using (var scope = app.Services.CreateScope())
             {

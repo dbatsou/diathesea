@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Domain;
 using Storage;
 
-namespace Persistence
+namespace Storage
 {
     public class Seed
     {
