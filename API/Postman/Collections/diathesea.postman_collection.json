@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "64a8963b-9d0a-4ceb-a51c-60a1025c8e63",
+		"name": "diathesea",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "State",
+			"item": [
+				{
+					"name": "Get State By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/state/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get State By ParentStateId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/state/parent/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								"parent",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get States",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/state/states",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								"states"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
