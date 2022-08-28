@@ -19,7 +19,7 @@ namespace Storage
         {
             new Activity() { ActivityName = "Reading" },
             new Activity() { ActivityName = "Walking" },
-            new Activity() { ActivityName = "Walking" },
+            new Activity() { ActivityName = "Running" },
         };
 
 
