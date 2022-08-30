@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Storage;
+using MediatR;
+using Application.States;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,14 +12,16 @@ builder.Services.AddControllers();
 
 builder.Services.AddControllers().AddJsonOptions(jsonOptions =>
                 {
-                    jsonOptions.JsonSerializerOptions.PropertyNamingPolicy =  null;
+                    jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
                     jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
 
-                }) ;
+                });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMediatR(typeof(List.Query).Assembly);
+
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddSqlite<DataContext>(connectionString);
@@ -29,6 +33,7 @@ builder.Services.AddCors(opt =>
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
                 });
             });
+
 
 var app = builder.Build();
 app.UseCors(CORSPolicy);
@@ -51,33 +56,33 @@ app.Run();
 
 
 
- async Task RecreateDatabase()
+async Task RecreateDatabase()
 {
-    
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
+
+    using (var scope = app.Services.CreateScope())
     {
-        string[] fileNames = new string[]
+        var services = scope.ServiceProvider;
+        try
         {
+            string[] fileNames = new string[]
+            {
             "diathesea.db",
             "diathesea.db-wal",
             "diathesea.db-shm",
-        };
+            };
 
-        foreach(string file in fileNames)
-        if(File.Exists(file))
-            File.Delete(file);
+            foreach (string file in fileNames)
+                if (File.Exists(file))
+                    File.Delete(file);
 
-        var context = services.GetRequiredService<DataContext>();
-        context.Database.Migrate();
-        await Seed.SeedData(context);
+            var context = services.GetRequiredService<DataContext>();
+            context.Database.Migrate();
+            await Seed.SeedData(context);
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occured during migration");
+        }
     }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occured during migration");
-    }
-}
 }

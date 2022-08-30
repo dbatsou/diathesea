@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Storage;
-
 namespace API.Controllers
 {
     public class ActivitiesController : BaseApiController
@@ -30,7 +24,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivities(Guid id)
         {
-            var item =  await _context.Activity.FindAsync(id);
+            var item = await _context.Activity.FindAsync(id);
             return item;
         }
     }
