@@ -8,11 +8,9 @@ namespace API.Controllers
     public class StateController : BaseApiController
     {
         private readonly ILogger<StateController> _logger;
-        private readonly IMediator _mediator;
 
-        public StateController(ILogger<StateController> logger, IMediator mediator)
+        public StateController(ILogger<StateController> logger)
         {
-            _mediator = mediator;
             _logger = logger;
         }
 
@@ -39,6 +37,8 @@ namespace API.Controllers
             // var state = await _context.State.Where(st => st.StateId == id).FirstOrDefaultAsync();
 
             // return Ok(state);
+
+
             return Ok();
         }
 
