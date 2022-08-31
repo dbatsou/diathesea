@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <!-- <Nullable>enable</Nullable> -->
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,5 +20,4 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Storage\Storage.csproj" />
   </ItemGroup>
-
-</Project>
+  </Project>
