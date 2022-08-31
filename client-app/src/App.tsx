@@ -1,30 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import axios from 'axios';
-import { Header, List } from 'semantic-ui-react';
+import { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import { Header, List } from "semantic-ui-react";
 
 function App() {
-
-  const [activities, Setactivities] = useState([])
+  const [states, SetStates] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/Activities')
-      .then(response => {
-        console.log(response);
-        Setactivities(response.data);
-      })
+    axios.get("http://localhost:5000/api/state").then((response) => {
+      console.log(response);
+      SetStates(response.data);
+    });
   }, []);
 
   return (
     <div className="">
-      <Header as='h2' content='diathesea' />
+      <Header as="h2" content="diathesea" />
       <List>
-        {activities.map((activity: any) =>
-        (
-          <List.Item key={activity.id}>
-            {activity.title}
-          </List.Item>
+        {states.map((state: any) => (
+          <List.Item key={state.StateId}>{state.StateName} </List.Item>
         ))}
       </List>
     </div>
