@@ -1,7 +1,6 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Application.States;
-using MediatR;
 
 namespace API.Controllers
 {
@@ -15,33 +14,16 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<State>>> GetStates()
-        {
-            var states = await _mediator.Send(new List.Query());
+        public async Task<ActionResult<List<State>>> GetStates() =>
+            Ok(await _mediator.Send(new List.Query()));
 
-            return Ok(states);
-        }
 
-        [HttpGet("parent/{id}")]
-        public async Task<ActionResult<List<State>>> GetStatesForParentStateId(int id)
-        {
-            // var state = await _context.State.Where(st => st.ParentStateID == id).ToListAsync();
-
-            // return Ok(state);
-            return Ok();
-        }
+        [HttpGet("parent/{parentStateID}")]
+        public async Task<ActionResult<List<State>>> GetStatesForParentStateId(int parentStateID) =>
+            Ok(await _mediator.Send(new DetailsParent.Query() { ParentStateID = parentStateID }));
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<State>> GetStateById(int id)
-        {
-            // var state = await _context.State.Where(st => st.StateId == id).FirstOrDefaultAsync();
-
-            // return Ok(state);
-
-
-            return Ok();
-        }
-
-
+        public async Task<ActionResult<State>> GetStateById(int id) =>
+            Ok(await _mediator.Send(new Details.Query() { StateId = id }));
     }
 }
