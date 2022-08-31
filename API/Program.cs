@@ -51,7 +51,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    await RecreateDatabase();
+    await RecreateDatabase(builder.Configuration.GetValue<bool>("DevOptions:DeleteAndRecreateDBOnStartup"));
 }
 
 app.UseHttpsRedirection();
@@ -63,9 +63,8 @@ app.Run();
 
 
 
-async Task RecreateDatabase()
+async Task RecreateDatabase(bool recreate)
 {
-
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
@@ -73,15 +72,16 @@ async Task RecreateDatabase()
         {
             string[] fileNames = new string[]
             {
-            "diathesea.db",
-            "diathesea.db-wal",
-            "diathesea.db-shm",
+                "diathesea.db",
+                "diathesea.db-wal",
+                "diathesea.db-shm",
             };
-
-            foreach (string file in fileNames)
-                if (File.Exists(file))
-                    File.Delete(file);
-
+            if (recreate)
+            {
+                foreach (string file in fileNames)
+                    if (File.Exists(file))
+                        File.Delete(file);
+            }
             var context = services.GetRequiredService<DataContext>();
             context.Database.Migrate();
             await Seed.SeedData(context);
