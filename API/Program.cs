@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Storage;
 using MediatR;
 using Application.States;
+using Application.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddControllers().AddJsonOptions(jsonOptions =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(List.Query).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
