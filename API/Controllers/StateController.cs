@@ -25,5 +25,17 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<State>> GetStateById(int id) =>
             Ok(await _mediator.Send(new Details.Query() { StateId = id }));
+
+        [HttpPost]
+        public async Task<IActionResult> Create(State state)
+        => Created(string.Empty, await _mediator.Send(new Create.Command() { State = state }));
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<State>> DeleteStateById(int id) =>
+            Ok(await _mediator.Send(new Delete.Command() { Id = id }));
+
+        [HttpPut]
+        public async Task<ActionResult<State>> Edit(State state) =>
+            Ok(await _mediator.Send(new Edit.Command() { State = state }));
     }
 }
