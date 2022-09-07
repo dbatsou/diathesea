@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Header, List } from "semantic-ui-react";
+import { State } from "../models/state";
 
 function App() {
-  const [states, SetStates] = useState([]);
+  const [states, SetStates] = useState<State[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/state").then((response) => {
+    axios.get<State[]>("http://localhost:5000/api/state").then((response) => {
       console.log(response);
       SetStates(response.data);
     });
@@ -16,7 +17,7 @@ function App() {
     <div className="">
       <Header as="h2" content="diathesea" />
       <List>
-        {states.map((state: any) => (
+        {states.map((state) => (
           <List.Item key={state.StateId}>{state.StateName} </List.Item>
         ))}
       </List>
