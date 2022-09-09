@@ -40,7 +40,7 @@ namespace Storage.Migrations
                     b.Property<int>("ActivityId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Note")
@@ -87,7 +87,7 @@ namespace Storage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("StateId")

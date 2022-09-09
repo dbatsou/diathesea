@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Storage.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,7 +45,8 @@ namespace Storage.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ActivityId = table.Column<int>(type: "INTEGER", nullable: false),
                     Note = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    StateId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -57,6 +58,12 @@ namespace Storage.Migrations
                         principalTable: "Activity",
                         principalColumn: "ActivityId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActivityEntry_State_StateId",
+                        column: x => x.StateId,
+                        principalTable: "State",
+                        principalColumn: "StateId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,7 +73,7 @@ namespace Storage.Migrations
                     StateEntryId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     StateId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -84,6 +91,11 @@ namespace Storage.Migrations
                 name: "IX_ActivityEntry_ActivityId",
                 table: "ActivityEntry",
                 column: "ActivityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActivityEntry_StateId",
+                table: "ActivityEntry",
+                column: "StateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StateEntry_StateId",

@@ -11,8 +11,8 @@ using Storage;
 namespace Storage.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220909001456_AddStateColumnToActivityEntry")]
-    partial class AddStateColumnToActivityEntry
+    [Migration("20220909011011_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,7 +42,7 @@ namespace Storage.Migrations
                     b.Property<int>("ActivityId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Note")
@@ -89,7 +89,7 @@ namespace Storage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("StateId")
