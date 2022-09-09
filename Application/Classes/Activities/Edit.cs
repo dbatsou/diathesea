@@ -21,11 +21,11 @@ namespace Application.Activities
 
             public async Task<Activity> Handle(Command request, CancellationToken cancellationToken)
             {
-                var state = await _context.Activity.FindAsync(request.Activity.ActivityId);
-                _mapper.Map(request.Activity, state);
+                var activity = await _context.Activity.FindAsync(request.Activity.ActivityId);
+                _mapper.Map(request.Activity, activity);
                 await _context.SaveChangesAsync();
 
-                return state;
+                return activity;
             }
         }
     }

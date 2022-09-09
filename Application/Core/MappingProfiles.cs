@@ -9,6 +9,7 @@ namespace Application.Core
         {
             CreateMap<State, State>();
             CreateMap<Activity, Activity>();
+            CreateMap<Activity, ActivityEntry>();
         }
     }
 }
