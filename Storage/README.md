@@ -9,4 +9,4 @@ dotnet ef migrations add <MigrationName> -p Storage/ -s API/
 By default SQLite does not enforce foreign key constraint, if browsing the db
 PRAGMA foreign_keys = ON; needs to be run to enforce
 
-also it can be enforced via the connection string
+also it can be enforced via the connection string by appending ;foreign keys=true;
