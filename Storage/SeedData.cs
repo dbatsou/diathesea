@@ -6,20 +6,34 @@ namespace Storage
     {
         public static async Task SeedData(DataContext context)
         {
-            if (context.Activity.Any()) return;
-            await context.Activity.AddRangeAsync(SeedActivities());
+            if (!context.Activity.Any())
+                await context.Activity.AddRangeAsync(SeedActivities());
 
-            if (context.State.Any()) return;
-            await context.State.AddRangeAsync(SeedStates());
+            if (!context.State.Any())
+                await context.State.AddRangeAsync(SeedStates());
+
+            await context.SaveChangesAsync();
+
+            if (!context.ActivityEntry.Any())
+                await context.ActivityEntry.AddRangeAsync(SeedActivityEntries());
 
             await context.SaveChangesAsync();
         }
 
+        private static List<ActivityEntry> SeedActivityEntries()
+        => new List<ActivityEntry>()
+        {
+            new ActivityEntry() {ActivityEntryId=1,  Note = "that was a nice walk" , ActivityId = 1, StateId=1 },
+            new ActivityEntry() {ActivityEntryId=2,  Note = "that was a nice walk" , ActivityId = 1},
+            // new ActivityEntry() { ActivityId= 1, Note = "that was a nice walk" },
+            // new ActivityEntry() { ActivityId= 3, Note = "that was a nice run" },
+        };
+
         static List<Activity> SeedActivities() => new List<Activity>()
         {
-            new Activity() { ActivityName = "Reading" },
-            new Activity() { ActivityName = "Walking" },
-            new Activity() { ActivityName = "Running" },
+             new Activity() { ActivityId = 1, ActivityName = "Reading" },
+             new Activity() { ActivityId = 2, ActivityName = "Walking" },
+             new Activity() { ActivityId = 3, ActivityName = "Running" },
         };
 
 
@@ -82,7 +96,7 @@ namespace Storage
                 new State() { StateId = 39 ,StateName = "Agonized", ParentStateID = 38 },
                 new State() { StateId = 40 ,StateName = "Disturbed", ParentStateID = 38 },
 
-                
+
                 new State() { StateId = 41 ,StateName = "Unhappy", ParentStateID = 3 },
                 new State() { StateId = 42 ,StateName = "Miserable", ParentStateID = 41 },
                 new State() { StateId = 43 ,StateName = "Dishartened", ParentStateID = 41 },
