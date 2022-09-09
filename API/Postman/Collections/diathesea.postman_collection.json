@@ -9,9 +9,118 @@
 			"name": "State",
 			"item": [
 				{
+					"name": "Get States",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/state/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get State By ParentStateId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/state/parent/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								"parent",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get State By Id",
 					"request": {
 						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/state/110",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								"110"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create State",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"StateName\": \"Blissful2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/state/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit State",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"StateId\": 110,\n    \"StateName\": \"XX-XXX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/state/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "{{url}}/state/1",
@@ -25,39 +134,250 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Activity",
+			"item": [
 				{
-					"name": "Get State By ParentStateId",
+					"name": "Get Activities",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/state/parent/2",
+							"raw": "{{url}}/activity/",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"state",
-								"parent",
-								"2"
+								"activity",
+								""
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get States",
+					"name": "Get Activity By Id",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/state/states",
+							"raw": "{{url}}/activity/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"activity",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Activity",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ActivityName\": \"Smoking\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/activity/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"activity",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Activity",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ActivityId\": 4,\n    \"ActivityName\": \"Smoking Weed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/activity/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"activity",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Activity",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/state/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"state",
-								"states"
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Activity Copy",
+			"item": [
+				{
+					"name": "Get Activity Entries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{activityEntry}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{activityEntry}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Activity Entry By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/activity/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"activity",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Activity",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"ActivityId\": 1,\n        \"Note\": \"that was a nice walk\",\n        \"StateId\": 999\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/activity/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"activity",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Activity",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ActivityId\": 4,\n    \"ActivityName\": \"Smoking Weed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{activityEntry}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{activityEntry}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Activity",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{activityEntry}}/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{activityEntry}}",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Helper",
+			"item": [
+				{
+					"name": "Version",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/state",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state"
 							]
 						}
 					},
