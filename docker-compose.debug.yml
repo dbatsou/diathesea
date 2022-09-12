@@ -1,0 +1,26 @@
+version: "3.4"
+
+services:
+  clientapp:
+    image: clientapp
+    build:
+      context: client-app
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+      - 9229:9229
+    command: ["node", "--inspect=0.0.0.0:9229", "index.js"]
+
+  api:
+    image: api
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+    ports:
+      - 5000:5000
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw
