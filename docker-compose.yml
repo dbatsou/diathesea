@@ -1,0 +1,19 @@
+version: "3.4"
+
+services:
+  clientapp:
+    image: frontendapp
+    build:
+      context: client-app
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+  api:
+    image: api
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+    ports:
+      - 5000:5000

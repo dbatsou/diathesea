@@ -51,8 +51,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    await RecreateDatabase(builder.Configuration.GetValue<bool>("DevOptions:DeleteAndRecreateDBOnStartup"));
 }
+await RecreateDatabase(builder.Configuration.GetValue<bool>("DevOptions:DeleteAndRecreateDBOnStartup"));
 
 app.UseHttpsRedirection();
 
