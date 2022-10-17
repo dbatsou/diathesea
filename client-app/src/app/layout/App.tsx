@@ -1,27 +1,42 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { Header, List } from "semantic-ui-react";
-import { State } from "../models/state";
+import { Container } from "semantic-ui-react";
+import NavBar from "./NavBar";
+import agent from "../api/agent";
+import { State, StateFormFormatted } from "../models/state";
+import { StateEntry } from "../models/stateEntry";
+import StateEntriesDashboard from "../../features/StateEntries/StateEntriesDashboard";
 
 function App() {
-  const [states, SetStates] = useState<State[]>([]);
+  // const [states, SetStates] = useState<State[]>([]);
+  const [stateEntries, SetStateEntries] = useState<StateEntry[]>([]);
+  const [states, SetStates] = useState<StateFormFormatted[]>([]);
 
   useEffect(() => {
-    axios.get<State[]>("http://localhost:5000/api/state").then((response) => {
-      console.log(response);
-      SetStates(response.data);
+    agent.States.list().then((response) => {
+      const statesFormatted: StateFormFormatted[] = [];
+      response.forEach((value) => {
+        statesFormatted.push({
+          key: value.StateId,
+          text: value.StateName,
+          value: value.StateName,
+        });
+      });
+      console.log(statesFormatted);
+      SetStates(statesFormatted);
+    });
+
+    agent.StateEntries.list().then((response) => {
+      SetStateEntries(response);
     });
   }, []);
 
   return (
-    <div className="">
-      <Header as="h2" content="diathesea" />
-      <List>
-        {states.map((state) => (
-          <List.Item key={state.StateId}>{state.StateName} </List.Item>
-        ))}
-      </List>
-    </div>
+    <>
+      <NavBar />
+      <Container style={{ marginTop: "4em" }}>
+        <StateEntriesDashboard stateEntries={stateEntries} states={states} />
+      </Container>
+    </>
   );
 }
 
