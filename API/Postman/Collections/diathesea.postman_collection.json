@@ -251,7 +251,7 @@
 			]
 		},
 		{
-			"name": "Activity Copy",
+			"name": "Activity Entry",
 			"item": [
 				{
 					"name": "Get Activity Entries",
@@ -277,13 +277,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/activity/4",
+							"raw": "{{url}}/{{activityEntry}}/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"activity",
-								"4"
+								"{{activityEntry}}",
+								"1"
 							]
 						}
 					},
@@ -296,7 +296,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\n        \"ActivityId\": 1,\n        \"Note\": \"that was a nice walk\",\n        \"StateId\": 999\n    }",
+							"raw": "    {\n        \"ActivityId\": 1,\n        \"Note\": \"that was a nice super walk\",\n        \"StateId\": 99\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -304,12 +304,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/activity/",
+							"raw": "{{url}}/{{activityEntry}}/",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"activity",
+								"{{activityEntry}}",
 								""
 							]
 						}
@@ -356,6 +356,119 @@
 							"path": [
 								"{{activityEntry}}",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "State Entry",
+			"item": [
+				{
+					"name": "Get State Entries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{stateEntry}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{stateEntry}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get State Entry By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{stateEntry}}/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{stateEntry}}",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create StateEntry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"StateId\": 1,\n    \"CreatedAt\": \"2022-10-17T00:22:01.489208\",\n    \"UpdatedAt\": \"2022-10-17T00:22:01.489208\",\n    \"Note\": \"today was meh again\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{stateEntry}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{stateEntry}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit State Entry",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"StateEntryId\": 3,\n    \"StateId\": 1,\n    \"CreatedAt\": \"2022-10-17T01:21:57.899945\",\n    \"UpdatedAt\": \"2022-10-17T01:21:57.899945\",\n    \"Note\": \"today was zuper again\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{stateEntry}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{stateEntry}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Activity",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{stateEntry}}/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{stateEntry}}",
+								"4"
 							]
 						}
 					},
