@@ -8,6 +8,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<State, State>();
+            CreateMap<StateEntry, StateEntry>();
             CreateMap<Activity, Activity>();
             CreateMap<Activity, ActivityEntry>();
         }
