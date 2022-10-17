@@ -18,7 +18,7 @@ namespace Application.ActivityEntries
 
             public async Task<List<ActivityEntry>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.ActivityEntry.ToListAsync();
+                return await _context.ActivityEntry.OrderByDescending(x => x.CreatedAt).ToListAsync();
             }
         }
 
