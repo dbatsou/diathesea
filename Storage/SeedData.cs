@@ -17,6 +17,9 @@ namespace Storage
             if (!context.ActivityEntry.Any())
                 await context.ActivityEntry.AddRangeAsync(SeedActivityEntries());
 
+            if (!context.StateEntry.Any())
+                await context.StateEntry.AddRangeAsync(SeedStateEntries());
+
             await context.SaveChangesAsync();
         }
 
@@ -27,6 +30,13 @@ namespace Storage
             new ActivityEntry() {ActivityEntryId=2,  Note = "that was a nice walk" , ActivityId = 1},
             // new ActivityEntry() { ActivityId= 1, Note = "that was a nice walk" },
             // new ActivityEntry() { ActivityId= 3, Note = "that was a nice run" },
+        };
+
+        private static List<StateEntry> SeedStateEntries()
+        => new List<StateEntry>()
+        {
+            new StateEntry() {StateId=1,  Note = "today was meh"   },
+            new StateEntry() {StateId=2,  Note = "yesterday also meh"  },
         };
 
         static List<Activity> SeedActivities() => new List<Activity>()
