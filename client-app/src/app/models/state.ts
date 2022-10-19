@@ -10,4 +10,5 @@ export interface StateFormFormatted {
   key: number;
   value: string;
   text: string;
+  stateid: number;
 }
