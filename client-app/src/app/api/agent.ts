@@ -49,8 +49,14 @@ const States = {
   list: () => requests.get<State[]>("/state"),
 };
 
+const stateEntryUri = "stateEntry";
 const StateEntries = {
-  list: () => requests.get<StateEntry[]>("/stateEntry"),
+  list: () => requests.get<StateEntry[]>(`/${stateEntryUri}`),
+  delete: (id: number) => axios.delete<void>(`/${stateEntryUri}/${id}`),
+  create: (stateEntry: StateEntry) =>
+    axios.post<void>(`/${stateEntryUri}`, stateEntry),
+  update: (stateEntry: StateEntry) =>
+    axios.put<void>(`/${stateEntryUri}/${stateEntry.StateEntryId}`, stateEntry),
 };
 
 const agent = {
