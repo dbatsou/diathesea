@@ -18,7 +18,7 @@ namespace Application.StateEntries
 
             public async Task<List<StateEntry>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.StateEntry.OrderBy(x => x.Date).ToListAsync();
+                return await _context.StateEntry.OrderByDescending(x => x.Date).ToListAsync();
             }
         }
 
