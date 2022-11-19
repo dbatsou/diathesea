@@ -1,8 +1,8 @@
 export interface StateEntry {
-  StateEntryId: number;
+  StateEntryId?: number;
   StateId: number;
-  CreatedAt: Date;
-  Date: Date;
-  UpdatedAt: Date | null;
+  Date: string;
+  CreatedAt: string;
+  UpdatedAt: string;
   Note: string;
 }
