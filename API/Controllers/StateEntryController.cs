@@ -29,7 +29,7 @@ namespace API.Controllers
         public async Task<ActionResult<StateEntry>> DeleteStateEntryById(int id) =>
             Ok(await _mediator.Send(new Delete.Command() { StateEntryId = id }));
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult<StateEntry>> Edit(StateEntry StateEntry) =>
             Ok(await _mediator.Send(new Edit.Command() { StateEntry = StateEntry }));
     }
