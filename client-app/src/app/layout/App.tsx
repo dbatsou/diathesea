@@ -8,28 +8,21 @@ import StateEntriesDashboard from "../../features/StateEntries/StateEntriesDashb
 import LoadingComponent from "./LoadingComponent";
 
 function App() {
-  // const [states, SetStates] = useState<State[]>([]);
-  const [stateEntries, SetStateEntries] = useState<StateEntry[]>([]);
-  const [states, SetStates] = useState<StateFormFormatted[]>([]);
+  const [stateEntries, setStateEntries] = useState<StateEntry[]>([]);
+  const [states, setStates] = useState<StateFormFormatted[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [isSubmitting, setSubmitting] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [addMode, setAddMode] = useState(false);
+
   const [selectedStateEntry, setSelectedStateEntry] = useState<
     StateEntry | undefined
   >(undefined);
 
-  function handleSelectStateEntry(id: number) {
-    var entry = stateEntries.find((x) => x.StateEntryId === id);
-    setSelectedStateEntry(entry);
-    setEditMode(true);
-    console.log("set to " + id);
-    console.log(entry);
-  }
-
-  function handleCancelSelectStateEntry() {
-    setSelectedStateEntry(undefined);
-    setEditMode(false);
-    console.log("cancel", selectedStateEntry);
+  function handleSelectStateEntry(stateEntryId: number) {
+    setSelectedStateEntry(
+      stateEntries.find((x) => x.StateEntryId === stateEntryId)
+    );
   }
 
   function handleFormOpen(id?: number) {
@@ -41,6 +34,16 @@ function App() {
     setEditMode(false);
   }
 
+  function handleCancelSelectStateEntry() {
+    setSelectedStateEntry(undefined);
+    setEditMode(false);
+    setAddMode(false);
+  }
+
+  function handleNewMode() {
+    setAddMode(true);
+  }
+
   function handleDeleteStateEntry(id: number) {
     setLoading(true);
 
@@ -49,31 +52,60 @@ function App() {
       var filteredStateEntries = stateEntries.filter(
         (x) => x.StateEntryId !== id
       );
-      var removed = stateEntries.find((x) => x.StateEntryId === id);
-      SetStateEntries(filteredStateEntries);
-      console.log("removed: ", removed);
+      setStateEntries(filteredStateEntries);
       setLoading(false);
     }
   }
 
+  function createOrEditStateEntry(stateEntry: StateEntry) {
+    console.log("from createOrEditStateEntry(): ", stateEntry);
+
+    if (stateEntry.StateEntryId) {
+      console.log("edit");
+
+      agent.StateEntries.update(stateEntry)
+        .then((response) => {
+          if (response.status === 200) fetchStateEntries();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log("create");
+      agent.StateEntries.create(stateEntry)
+        .then((response) => {
+          if (response.status === 201) fetchStateEntries();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    setEditMode(false);
+    setAddMode(false);
+  }
+
+  function fetchStateEntries() {
+    agent.StateEntries.list().then((response) => {
+      setStateEntries(response);
+    });
+  }
   useEffect(() => {
     agent.States.list().then((response) => {
+      //the following is performed because the semantic ui dropdown component needs the array in the format below key / text / value
       const statesFormatted: StateFormFormatted[] = [];
       response.forEach((value) => {
         statesFormatted.push({
           key: value.StateId,
           text: value.StateName,
           value: value.StateName,
-          stateid: value.StateId,
+          stateid: value.StateId, //not sure why the key prop always comes w/ 0 and the stateid with the right value TODO check
         });
-        SetStates(statesFormatted);
+        setStates(statesFormatted);
         setLoading(false);
       });
     });
 
-    agent.StateEntries.list().then((response) => {
-      SetStateEntries(response);
-    });
+    fetchStateEntries();
   }, []);
 
   if (isLoading) return <LoadingComponent />;
@@ -82,15 +114,18 @@ function App() {
       <NavBar />
       <Container style={{ marginTop: "4em" }}>
         <StateEntriesDashboard
-          stateEntries={stateEntries}
           states={states}
-          openForm={handleFormOpen}
-          closeForm={handleFormClose}
+          stateEntries={stateEntries}
           selectStateEntry={handleSelectStateEntry}
-          editMode={editMode}
           selectedStateEntry={selectedStateEntry}
           cancelStateEntry={handleCancelSelectStateEntry}
           deleteStateEntry={handleDeleteStateEntry}
+          editMode={editMode}
+          addMode={addMode}
+          handleNewMode={handleNewMode}
+          createOrEditStateEntry={createOrEditStateEntry}
+          openForm={handleFormOpen}
+          closeForm={handleFormClose}
         />
       </Container>
     </>
