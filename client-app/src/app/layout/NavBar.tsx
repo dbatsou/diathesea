@@ -3,14 +3,14 @@ import { Container, Dropdown, Menu } from "semantic-ui-react";
 
 export default function NavBar() {
   return (
-    <Menu size="large" inverted fixed="top">
-      <Container>
+    <Container>
+      <Menu size="large" inverted fixed="top">
         <Menu.Item header>diathesea</Menu.Item>
-        <Menu.Item name="States" />
-        <Menu.Item name="History" />
-        <Menu.Item name="Activites" />
-      </Container>
-    </Menu>
+        {/* <Menu.Item name="States" /> */}
+        {/* <Menu.Item name="History" /> */}
+        {/* <Menu.Item name="Activites" /> */}
+      </Menu>
+    </Container>
     // <Menu size="large" inverted fixed="top">
     //   <Dropdown item text="Categories">
     //     <Dropdown.Menu>
