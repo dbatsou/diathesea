@@ -1,4 +1,5 @@
 import { Button, Container } from "semantic-ui-react";
+import AddEntry from "../../app/layout/minis/AddEntry";
 import { StateFormFormatted } from "../../app/models/state";
 import { StateEntry } from "../../app/models/stateEntry";
 import StateEntriesList from "./StateEntriesList";
@@ -11,9 +12,12 @@ interface Props {
   selectStateEntry: (id: number) => void;
   cancelStateEntry: () => void;
   editMode: boolean;
-  openForm: (id: number) => void;
+  addMode: boolean;
+  handleNewMode: () => void;
+  createOrEditStateEntry: (stateEntry: StateEntry) => void;
   deleteStateEntry: (id: number) => void;
   closeForm: () => void;
+  openForm: (id: number) => void;
 }
 
 export default function StateEntriesDashboard({
@@ -23,21 +27,36 @@ export default function StateEntriesDashboard({
   deleteStateEntry,
   selectStateEntry,
   cancelStateEntry,
+  handleNewMode,
   editMode,
+  addMode,
   openForm,
-  closeForm,
+  createOrEditStateEntry,
 }: Props) {
   return (
     <Container>
+      <AddEntry
+        handleNewMode={handleNewMode}
+        editMode={editMode}
+        addMode={addMode}
+      />
+      {(selectedStateEntry || addMode) && (
+        <StateEntryInput
+          states={states}
+          selectedStateEntry={selectedStateEntry!}
+          cancel={cancelStateEntry}
+          editMode={editMode}
+          addMode={addMode}
+          createOrEditStateEntry={createOrEditStateEntry}
+        />
+      )}
       <StateEntriesList
         stateEntries={stateEntries}
-        selectStateEntry={selectStateEntry}
+        openForm={openForm}
         deleteStateEntry={deleteStateEntry}
-      />
-      <StateEntryInput
+        editMode={editMode}
+        addMode={addMode}
         states={states}
-        selectedStateEntry={selectedStateEntry}
-        cancel={cancelStateEntry}
       />
     </Container>
   );
