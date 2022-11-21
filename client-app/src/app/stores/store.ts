@@ -2,14 +2,17 @@
     Store that holds other stores
 */
 import { createContext, useContext } from "react";
-import ActivityEntryStore from "./activityEntryStore";
+import StateEntryStore from "./stateEntryStore";
+import StateStore from "./stateStore";
 
 interface Store {
-  activityEntryStore: ActivityEntryStore;
+  stateEntryStore: StateEntryStore;
+  stateStore: StateStore;
 }
 
 export const store: Store = {
-  activityEntryStore: new ActivityEntryStore(),
+  stateEntryStore: new StateEntryStore(),
+  stateStore: new StateStore(),
 };
 
 export const StoreContext = createContext(store);
