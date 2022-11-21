@@ -1,28 +1,21 @@
-import { ChangeEvent, SyntheticEvent, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { displayOrNone } from "../../app/layout/stylesHelper";
-import { StateFormFormatted } from "../../app/models/state";
 import { StateEntry } from "../../app/models/stateEntry";
+import { useStore } from "../../app/stores/store";
 
-interface Props {
-  states: StateFormFormatted[];
-  selectedStateEntry: StateEntry;
-  cancel: () => void;
-  editMode: boolean;
-  addMode: boolean;
-  createOrEditStateEntry: (stateEntry: StateEntry) => void;
-}
+export default function StateEntryInput() {
+  const { stateEntryStore, stateStore } = useStore();
+  const {
+    selectedStateEntry,
+    addMode,
+    editMode,
+    handleCancelSelectStateEntry,
+    createOrEditStateEntry,
+  } = stateEntryStore;
 
-export default function StateEntryInput({
-  selectedStateEntry,
-  states,
-  cancel,
-  editMode,
-  addMode,
-  createOrEditStateEntry,
-}: Props) {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate] = useState(new Date());
   let initialState = selectedStateEntry
     ? selectedStateEntry
     : ({ Date: currentDate.toISOString() } as StateEntry);
@@ -81,13 +74,16 @@ export default function StateEntryInput({
         /> */}
 
         <Form.Select
-          options={states}
+          options={stateStore.states}
           placeholder="State"
           name="StateId"
-          value={states.find((x) => x.stateid === stateEntry?.StateId)?.value}
+          value={
+            stateStore.states.find((x) => x.stateid === stateEntry?.StateId)
+              ?.value
+          }
           onChange={(event, data) => {
-            const { name, value } = data;
-            const stateid = states.find(
+            const { name } = data;
+            const stateid = stateStore.states.find(
               (state) => state.value === data.value
             )?.stateid;
             setStateEntry({
@@ -111,7 +107,7 @@ export default function StateEntryInput({
         />
         <Button
           floated="right"
-          onClick={() => cancel()}
+          onClick={() => handleCancelSelectStateEntry()}
           content="Cancel"
           style={{ marginTop: "2em" }}
           type="reset"
