@@ -7,11 +7,10 @@ import StateEntryInput from "./StateEntryInput";
 
 export default observer(function StateEntriesDashboard() {
   const { stateEntryStore } = useStore();
-  const { selectedStateEntry, addMode } = stateEntryStore;
   return (
     <Container>
       <AddEntry />
-      {(selectedStateEntry || addMode) && <StateEntryInput />}
+      <StateEntryInput />
       <StateEntriesList />
     </Container>
   );
