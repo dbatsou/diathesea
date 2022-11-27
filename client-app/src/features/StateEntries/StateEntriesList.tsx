@@ -1,19 +1,20 @@
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button, Item, Segment } from "semantic-ui-react";
-import { displayOrNone } from "../../app/layout/stylesHelper";
 import { useStore } from "../../app/stores/store";
 
 export default observer(function StateEntriesList() {
   const { stateEntryStore, stateStore } = useStore();
-  const { addMode, editMode } = stateEntryStore;
+
+  useEffect(() => {
+    stateEntryStore.loadStateEntries();
+  }, [stateEntryStore, stateEntryStore.loadingInitial, stateStore]);
 
   return (
     <Segment
       style={{
         marginTop: "0em",
-        display: displayOrNone(
-          stateEntryStore.stateEntries.length > 0 && !editMode && !addMode
-        ),
       }}
     >
       {/* <Divider /> */}
@@ -46,9 +47,8 @@ export default observer(function StateEntriesList() {
                 color="red"
               />
               <Button
-                onClick={() =>
-                  stateEntryStore.handleFormOpen(stateEntry.StateEntryId!)
-                }
+                as={Link}
+                to={`/state/edit/${stateEntry.StateEntryId}`}
                 floated="right"
                 content="Edit"
                 color="blue"
