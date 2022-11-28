@@ -3,37 +3,13 @@ import agent from "../api/agent";
 import { StateEntry } from "../models/stateEntry";
 
 export default class StateEntryStore {
-  loadingInitial = true;
+  loadingInitial = false;
   isSubmitting = false;
-  editMode = false;
-  addMode = false;
   stateEntries: StateEntry[] = [];
-  selectedStateEntry: StateEntry | undefined = undefined;
 
   constructor() {
     makeAutoObservable(this);
   }
-
-  handleSelectStateEntry = (stateEntryId: number) => {
-    this.selectedStateEntry = this.stateEntries.find(
-      (x) => x.StateEntryId === stateEntryId
-    );
-  };
-
-  handleFormOpen = (id?: number) => {
-    id ? this.handleSelectStateEntry(id) : this.handleCancelSelectStateEntry();
-    this.setEditMode(true);
-  };
-
-  handleFormClose = () => {
-    this.setEditMode(false);
-  };
-
-  handleCancelSelectStateEntry = () => {
-    this.selectedStateEntry = undefined;
-    this.setEditMode(false);
-    this.setAddMode(false);
-  };
 
   createOrEditStateEntry = (stateEntry: StateEntry) => {
     console.log("from createOrEditStateEntry(): ", stateEntry);
@@ -58,8 +34,6 @@ export default class StateEntryStore {
             console.log(error);
           });
       }
-      this.setEditMode(false);
-      this.setAddMode(false);
     } catch (error) {
       console.log(error);
     }
@@ -80,30 +54,38 @@ export default class StateEntryStore {
   loadStateEntries = async () => {
     try {
       const entries = await agent.StateEntries.list();
-      this.stateEntries = entries;
-      this.setLoadingInitial(false);
+      this.setStateEntries(entries);
     } catch (error) {
-      this.setLoadingInitial(false);
       console.log(error);
     }
   };
 
-  handleNewMode = () => {
-    this.setAddMode(true);
+  loadStateEntry = async (id: number) => {
+    let entry = this.getStateEntry(id);
+    if (entry) {
+      return entry;
+    } else
+      try {
+        let entry = await agent.StateEntries.details(id);
+        return entry.data;
+      } catch (error) {
+        console.log(error);
+      }
   };
+
   setLoadingInitial(state: boolean) {
     this.loadingInitial = state;
-  }
-
-  setEditMode(state: boolean) {
-    this.editMode = state;
   }
 
   setIsSubmitting(state: boolean) {
     this.isSubmitting = state;
   }
 
-  setAddMode(state: boolean) {
-    this.addMode = state;
+  setStateEntries(stateEntries: StateEntry[]) {
+    this.stateEntries = stateEntries;
+  }
+
+  getStateEntry(id: number) {
+    return this.stateEntries.find((x) => x.StateEntryId === id)!;
   }
 }
