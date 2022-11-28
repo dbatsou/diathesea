@@ -1,30 +1,41 @@
-import { ChangeEvent, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { displayOrNone } from "../../app/layout/stylesHelper";
 import { StateEntry } from "../../app/models/stateEntry";
 import { useStore } from "../../app/stores/store";
 
-export default function StateEntryInput() {
+export default observer(function StateEntryInput() {
   const { stateEntryStore, stateStore } = useStore();
-  const {
-    selectedStateEntry,
-    addMode,
-    editMode,
-    handleCancelSelectStateEntry,
-    createOrEditStateEntry,
-  } = stateEntryStore;
-
+  const { createOrEditStateEntry, loadStateEntry } = stateEntryStore;
+  const navigate = useNavigate();
   const [currentDate] = useState(new Date());
-  let initialState = selectedStateEntry
-    ? selectedStateEntry
-    : ({ Date: currentDate.toISOString() } as StateEntry);
+  const startState = {
+    Date: currentDate.toISOString(),
+  };
+  const [stateEntry, setStateEntry] = useState<StateEntry>(startState);
 
-  const [stateEntry, setStateEntry] = useState(initialState);
+  let { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    try {
+      if (id && parseInt(id)) {
+        let entry = loadStateEntry(Number.parseInt(id!)).then((x) => {
+          setStateEntry(x!);
+        });
+      } else {
+        setStateEntry(startState);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [id, loadStateEntry]);
 
   function handleSubmit() {
     console.log("from handleSubmit(): ", stateEntry);
     createOrEditStateEntry(stateEntry);
+    navigate("/history");
   }
 
   function handleInputChange(
@@ -37,12 +48,7 @@ export default function StateEntryInput() {
   function handleDatePickerInputChange(event: any, data: any) {
     const { name, value } = data;
     const d = value as Date;
-    // console.log("%d-%d-%d", d.getFullYear(), d.getUTCMonth(), d.getUTCDay());
-    // console.log(value?.toLocaleString());
-    // console.log(d.toUTCString());
     if (d) {
-      console.log(d.toISOString());
-
       handleSetStateEntry(name, value);
     }
   }
@@ -55,7 +61,7 @@ export default function StateEntryInput() {
   }
 
   return (
-    <Segment clearing style={{ display: displayOrNone(editMode || addMode) }}>
+    <Segment clearing>
       <Form onSubmit={handleSubmit} autoComplete="off">
         <SemanticDatepicker
           format="dddd DD MMMM YYYY"
@@ -63,23 +69,17 @@ export default function StateEntryInput() {
           placeholder="Date"
           name="Date"
           onChange={handleDatePickerInputChange}
-          // value={Date.parse(stateEntry.Date)}
           value={new Date(stateEntry.Date)}
         />
-
-        {/* <Form.Input
-          name="Date"
-          value={stateEntry?.Date.toString()}
-          onChange={handleInputChange}
-        /> */}
 
         <Form.Select
           options={stateStore.states}
           placeholder="State"
           name="StateId"
           value={
-            stateStore.states.find((x) => x.stateid === stateEntry?.StateId)
-              ?.value
+            stateStore.states.find(
+              (x) => x.stateid > 0 && x.stateid === stateEntry?.StateId
+            )?.text || ""
           }
           onChange={(event, data) => {
             const { name } = data;
@@ -88,26 +88,27 @@ export default function StateEntryInput() {
             )?.stateid;
             setStateEntry({
               ...stateEntry!,
-              [name]: stateid ?? -1,
+              [name]: stateid ?? "",
             });
           }}
         />
         <Form.TextArea
           name="Note"
           placeholder="Tell me more"
-          value={stateEntry!.Note}
+          value={(stateEntry && stateEntry!.Note) || ""}
           onChange={handleInputChange}
         />
         <Button
           floated="right"
           color="green"
-          content={editMode ? "Update" : "Save"}
+          content={id ? "Update" : "Save"}
           style={{ marginTop: "2em" }}
           type="submit"
         />
         <Button
           floated="right"
-          onClick={() => handleCancelSelectStateEntry()}
+          as={Link}
+          to="/history"
           content="Cancel"
           style={{ marginTop: "2em" }}
           type="reset"
@@ -115,4 +116,4 @@ export default function StateEntryInput() {
       </Form>
     </Segment>
   );
-}
+});
