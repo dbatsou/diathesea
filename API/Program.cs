@@ -13,11 +13,11 @@ const string CORSPolicy = "CorsPolicy";
 builder.Services.AddControllers();
 
 builder.Services.AddControllers().AddJsonOptions(jsonOptions =>
-{
-    jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
-    jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+                {
+                    jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
 
-});
+                });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -30,20 +30,22 @@ builder.Services.AddMediatR(typeof(MappingProfiles).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 
+var connectionString = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddSqlite<DataContext>(connectionString);
 
 builder.Services.AddCors(opt =>
-{
-    opt.AddPolicy(CORSPolicy, policy =>
-    {
-        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
-    });
-});
+            {
+                opt.AddPolicy(CORSPolicy, policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                });
+            });
 
-
-SelectDatabaseProvider(builder);
 
 var app = builder.Build();
 app.UseCors(CORSPolicy);
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -81,9 +83,7 @@ async Task RecreateDatabase(bool recreate)
                         File.Delete(file);
             }
             var context = services.GetRequiredService<DataContext>();
-
-            if (!bool.Parse(builder.Configuration.GetConnectionString("UseInMemory")))
-                context.Database.Migrate();
+            context.Database.Migrate();
             await Seed.SeedData(context);
         }
         catch (Exception ex)
@@ -91,22 +91,5 @@ async Task RecreateDatabase(bool recreate)
             var logger = services.GetRequiredService<ILogger<Program>>();
             logger.LogError(ex, "An error occured during migration");
         }
-    }
-}
-
-static void SelectDatabaseProvider(WebApplicationBuilder builder)
-{
-    var useInMemory = bool.Parse(builder.Configuration.GetConnectionString("UseInMemory"));
-    if (useInMemory)
-    {
-        builder.Services.AddDbContext<DataContext>(options =>
-        {
-            options.UseInMemoryDatabase(databaseName: "diathesea");
-        });
-    }
-    else
-    {
-        var connectionString = builder.Configuration.GetConnectionString("DefaultSQLite");
-        builder.Services.AddSqlite<DataContext>(connectionString);
     }
 }
