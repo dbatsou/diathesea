@@ -1,4 +1,8 @@
-﻿using NBomber;
+﻿using System.Text;
+using System.Text.Json;
+using Domain.Entities;
+using NBomber.Contracts;
+using NBomber.Contracts.Stats;
 using NBomber.CSharp;
 using NBomber.Plugins.Http.CSharp;
 using NBomber.Plugins.Network.Ping;
@@ -7,46 +11,66 @@ using NBomber.Plugins.Network.Ping;
 Console.WriteLine("Hello, World!");
 try
 {
-await X();
+	BombIt();
 
 }
 catch (Exception e)
 {
-    Console.WriteLine(e);
-    throw;
+	Console.WriteLine(e);
+	throw;
 }
 Console.WriteLine("end of story");
 
 
 
 
-async Task X()
+void BombIt()
 {
-    
-    const string url = $"http://localhost:5000/api/state";
-    var step = Step.Create("fetch_html_page",
-                                   clientFactory: HttpClientFactory.Create(),
-                                   execute: context =>
-                                   {
-                                       var request = Http.CreateRequest("GET", url)
-                                                         .WithHeader("Accept", "text/html");
+	var client = HttpClientFactory.Create();
+	var entry = new StateEntry() {StateId = 1, Date = DateTime.Now, Note = "welcome to the jungle"};
+	var stateEntryBody = JsonSerializer.Serialize(entry);
+	
+	var steps = new[]
+	{
+		CreateStep(client,"getStates", "/state", HttpMethod.Get),
+		CreateStep(client,"getEntries", "/stateEntry", HttpMethod.Get),
+		// CreateStep(client,"addStateEntry", "/stateEntry", HttpMethod.Post,stateEntryBody),
+	};
+	
+	var scenario = ScenarioBuilder
+		.CreateScenario("addEntry", steps)
+		.WithWarmUpDuration(TimeSpan.FromSeconds(30))
+		.WithLoadSimulations(
+			Simulation.KeepConstant(200, during: TimeSpan.FromSeconds(600))
+		);
 
-                                       return Http.Send(request, context);
-                                   });
+	// creates ping plugin that brings additional reporting data
+	var pingPluginConfig = PingPluginConfig.CreateDefault(new[] { "localhost" });
+	var pingPlugin = new PingPlugin(pingPluginConfig);
 
-    var scenario = ScenarioBuilder
-        .CreateScenario("simple_http", step)
-        .WithWarmUpDuration(TimeSpan.FromSeconds(20))
-        .WithLoadSimulations(
-            Simulation.InjectPerSec(rate: 20, during: TimeSpan.FromSeconds(60))
-        );
+	NBomberRunner
+		.RegisterScenarios(scenario)
+		.WithWorkerPlugins(pingPlugin)
+		.WithReportFormats(ReportFormat.Html)
+		.Run();
+}
 
-    // creates ping plugin that brings additional reporting data
-    var pingPluginConfig = PingPluginConfig.CreateDefault(new[] { "localhost:5000" });
-    var pingPlugin = new PingPlugin(pingPluginConfig);
-
-    NBomberRunner
-        .RegisterScenarios(scenario)
-        .WithWorkerPlugins(pingPlugin)
-        .Run();
+IStep CreateStep(IClientFactory<HttpClient> clientFactory, string name, string url, HttpMethod method, string body=null)
+{
+	string uri = $"http://localhost:5000/api{url}";
+	var step = Step.Create(name,
+		clientFactory: clientFactory,
+		execute: context =>
+		{
+			var request = Http.CreateRequest(method.Method, uri).WithHeader("Content-Type", "application/json");
+			
+			if (!string.IsNullOrEmpty((body)))
+			{
+				var stringContent = new StringContent(body, Encoding.UTF8, "application/json");
+				request = request.WithBody(stringContent);
+			}
+			var resp=  Http.Send(request, context);
+			return resp;
+		});
+	return step;
 }
