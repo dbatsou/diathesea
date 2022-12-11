@@ -11,9 +11,4 @@
     <PackageReference Include="NBomber" Version="3.3.0" />
     <PackageReference Include="NBomber.http" Version="3.0.3" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-  </ItemGroup>
-
 </Project>

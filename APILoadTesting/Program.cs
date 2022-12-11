@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json;
-using Domain.Entities;
 using NBomber.Contracts;
 using NBomber.Contracts.Stats;
 using NBomber.CSharp;
@@ -27,21 +26,21 @@ Console.WriteLine("end of story");
 void BombIt()
 {
 	var client = HttpClientFactory.Create();
-	var entry = new StateEntry() {StateId = 1, Date = DateTime.Now, Note = "welcome to the jungle"};
+	var entry = new  {StateId = 1, Date = DateTime.Now, Note = "welcome to the jungle"};
 	var stateEntryBody = JsonSerializer.Serialize(entry);
 	
 	var steps = new[]
 	{
 		CreateStep(client,"getStates", "/state", HttpMethod.Get),
 		CreateStep(client,"getEntries", "/stateEntry", HttpMethod.Get),
-		// CreateStep(client,"addStateEntry", "/stateEntry", HttpMethod.Post,stateEntryBody),
+		CreateStep(client,"addStateEntry", "/stateEntry", HttpMethod.Post,stateEntryBody),
 	};
 	
 	var scenario = ScenarioBuilder
 		.CreateScenario("addEntry", steps)
-		.WithWarmUpDuration(TimeSpan.FromSeconds(30))
+		.WithWarmUpDuration(TimeSpan.FromSeconds(5))
 		.WithLoadSimulations(
-			Simulation.KeepConstant(200, during: TimeSpan.FromSeconds(600))
+			Simulation.KeepConstant(10, during: TimeSpan.FromSeconds(30))
 		);
 
 	// creates ping plugin that brings additional reporting data
@@ -62,7 +61,7 @@ IStep CreateStep(IClientFactory<HttpClient> clientFactory, string name, string u
 		clientFactory: clientFactory,
 		execute: context =>
 		{
-			var request = Http.CreateRequest(method.Method, uri).WithHeader("Content-Type", "application/json");
+			var request = Http.CreateRequest(method.Method, uri);
 			
 			if (!string.IsNullOrEmpty((body)))
 			{
