@@ -8,9 +8,10 @@ using NBomber.Plugins.Network.Ping;
 
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
+string baseUrl = "http://localhost:5000/api";
 try
 {
-	BombIt();
+	CreateScenarios();
 
 }
 catch (Exception e)
@@ -23,17 +24,20 @@ Console.WriteLine("end of story");
 
 
 
-void BombIt()
+void CreateScenarios()
 {
-	var client = HttpClientFactory.Create();
-	var entry = new  {StateId = 1, Date = DateTime.Now, Note = "welcome to the jungle"};
-	var stateEntryBody = JsonSerializer.Serialize(entry);
+	var httpFactory = ClientFactory.Create(
+		name: "http_factory",                         
+		clientCount: 1,
+		initClient: (number,context) => Task.FromResult(new HttpClient())
+	);
+	var stateEntryBody = JsonSerializer.Serialize(new  {StateId = 1, Date = DateTime.Now, Note = "welcome to the jungle"});
 	
 	var steps = new[]
 	{
-		CreateStep(client,"getStates", "/state", HttpMethod.Get),
-		CreateStep(client,"getEntries", "/stateEntry", HttpMethod.Get),
-		CreateStep(client,"addStateEntry", "/stateEntry", HttpMethod.Post,stateEntryBody),
+		CreateStep(httpFactory,"getStates", "/state", HttpMethod.Get),
+		CreateStep(httpFactory,"getEntries", "/stateEntry", HttpMethod.Get),
+		CreateStep(httpFactory,"addStateEntry", "/stateEntry", HttpMethod.Post,stateEntryBody),
 	};
 	
 	var scenario = ScenarioBuilder
@@ -56,7 +60,7 @@ void BombIt()
 
 IStep CreateStep(IClientFactory<HttpClient> clientFactory, string name, string url, HttpMethod method, string body=null)
 {
-	string uri = $"http://localhost:5000/api{url}";
+	string uri = $"{baseUrl}{url}";
 	var step = Step.Create(name,
 		clientFactory: clientFactory,
 		execute: context =>
