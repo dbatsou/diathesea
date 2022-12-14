@@ -21,7 +21,7 @@ export default observer(function StateEntryInput() {
   useEffect(() => {
     try {
       if (id && parseInt(id)) {
-        let entry = loadStateEntry(Number.parseInt(id!)).then((x) => {
+        loadStateEntry(Number.parseInt(id!)).then((x) => {
           setStateEntry(x!);
         });
       } else {
