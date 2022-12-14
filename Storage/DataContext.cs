@@ -12,8 +12,6 @@ namespace Storage
         {
         }
 
-        public DbSet<Activity> Activity { get; set; }
-        public DbSet<ActivityEntry> ActivityEntry { get; set; }
         public DbSet<State> State { get; set; }
         public DbSet<StateEntry> StateEntry { get; set; }
 

@@ -6,16 +6,11 @@ namespace Storage
     {
         public static async Task SeedData(DataContext context)
         {
-            if (!context.Activity.Any())
-                await context.Activity.AddRangeAsync(SeedActivities());
 
             if (!context.State.Any())
                 await context.State.AddRangeAsync(SeedStates());
 
             await context.SaveChangesAsync();
-
-            if (!context.ActivityEntry.Any())
-                await context.ActivityEntry.AddRangeAsync(SeedActivityEntries());
 
             if (!context.StateEntry.Any())
                 await context.StateEntry.AddRangeAsync(SeedStateEntries());
@@ -23,29 +18,12 @@ namespace Storage
             await context.SaveChangesAsync();
         }
 
-        private static List<ActivityEntry> SeedActivityEntries()
-        => new List<ActivityEntry>()
-        {
-            new ActivityEntry() {ActivityEntryId=1,  Note = "that was a nice walk" , ActivityId = 1, StateId=1 },
-            new ActivityEntry() {ActivityEntryId=2,  Note = "that was a nice walk" , ActivityId = 1},
-            // new ActivityEntry() { ActivityId= 1, Note = "that was a nice walk" },
-            // new ActivityEntry() { ActivityId= 3, Note = "that was a nice run" },
-        };
-
         private static List<StateEntry> SeedStateEntries()
         => new List<StateEntry>()
         {
             new StateEntry() {StateId=1,  Note = "today was meh"   },
             new StateEntry() {StateId=2,  Note = "yesterday also meh"  },
         };
-
-        static List<Activity> SeedActivities() => new List<Activity>()
-        {
-             new Activity() { ActivityId = 1, ActivityName = "Reading" },
-             new Activity() { ActivityId = 2, ActivityName = "Walking" },
-             new Activity() { ActivityId = 3, ActivityName = "Running" },
-        };
-
 
         static List<State> SeedStates()
         {
