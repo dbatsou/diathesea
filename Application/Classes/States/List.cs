@@ -16,7 +16,7 @@ namespace Application.States
 
             public async Task<List<Domain.Entities.State>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.State.Where(st => st.ParentStateID == null).ToListAsync();
+                return await _context.State.OrderBy(x => x.StateId).ToListAsync();
             }
         }
 

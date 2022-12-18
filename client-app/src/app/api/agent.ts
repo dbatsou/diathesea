@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { ActivityEntry } from "../models/activityentry";
 import { State } from "../models/state";
 import { StateEntry } from "../models/stateEntry";
 
@@ -30,21 +29,6 @@ const requests = {
   del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
-const activityEntryUri = "activityEntry";
-const ActivityEntries = {
-  list: () => requests.get<ActivityEntry[]>(`/${activityEntryUri}`),
-  details: (id: string) =>
-    requests.get<ActivityEntry>(`/${activityEntryUri}/${id}`),
-  create: (activityEntry: ActivityEntry) =>
-    axios.post<void>(`/${activityEntryUri}}`, activityEntry),
-  update: (activityEntry: ActivityEntry) =>
-    axios.put<void>(
-      `/${activityEntryUri}/${activityEntry.ActivityEntryId}`,
-      activityEntry
-    ),
-  delete: (id: string) => axios.delete<void>(`/${activityEntryUri}/${id}`),
-};
-
 const States = {
   list: () => requests.get<State[]>("/state"),
 };
@@ -61,7 +45,6 @@ const StateEntries = {
 };
 
 const agent = {
-  ActivityEntries,
   StateEntries,
   States,
 };
