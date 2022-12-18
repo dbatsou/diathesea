@@ -11,4 +11,5 @@ export interface StateFormFormatted {
   value: string;
   text: string;
   stateid: number;
+  parentstateid: number;
 }

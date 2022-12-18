@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
-import { Button, Form, Segment } from "semantic-ui-react";
+import { Button, Checkbox, Form, Segment } from "semantic-ui-react";
 import { StateEntry } from "../../app/models/stateEntry";
 import { useStore } from "../../app/stores/store";
 
@@ -15,6 +15,7 @@ export default observer(function StateEntryInput() {
     Date: currentDate.toISOString(),
   };
   const [stateEntry, setStateEntry] = useState<StateEntry>(startState);
+  const [showAllStates, setshowAllStates] = useState<boolean>(false);
 
   let { id } = useParams<{ id: string }>();
 
@@ -23,6 +24,7 @@ export default observer(function StateEntryInput() {
       if (id && parseInt(id)) {
         loadStateEntry(Number.parseInt(id!)).then((x) => {
           setStateEntry(x!);
+          setshowAllStates(true); //set to true because if the state doesn't belong in the main list it won't show
         });
       } else {
         setStateEntry(startState);
@@ -73,7 +75,12 @@ export default observer(function StateEntryInput() {
         />
 
         <Form.Select
-          options={stateStore.states}
+          //ToDo https://react-select.com/home nice one to check if I want to use it with a dropdown / auto complete
+          options={
+            !showAllStates
+              ? stateStore.states.filter((x) => x.parentstateid === undefined)
+              : stateStore.states
+          }
           placeholder="State"
           name="StateId"
           value={
@@ -92,11 +99,21 @@ export default observer(function StateEntryInput() {
             });
           }}
         />
+        <Checkbox
+          label="Show all states"
+          checked={showAllStates}
+          onChange={(e, data) => {
+            setshowAllStates(data.checked!);
+            console.log(showAllStates);
+          }}
+        />
+
         <Form.TextArea
           name="Note"
           placeholder="Tell me more"
           value={(stateEntry && stateEntry!.Note) || ""}
           onChange={handleInputChange}
+          style={{ marginTop: "0.5em" }}
         />
         <Button
           floated="right"

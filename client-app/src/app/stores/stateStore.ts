@@ -18,6 +18,7 @@ export default class StateStore {
           text: value.StateName,
           value: value.StateName,
           stateid: value.StateId, //not sure why the key prop always comes w/ 0 and the stateid with the right value TODO check
+          parentstateid: value.ParentStateID,
         });
         this.setLoadingInitial(false);
       });
