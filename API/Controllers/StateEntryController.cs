@@ -1,5 +1,6 @@
 using Application.StateEntries;
 using Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -14,23 +15,23 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<StateEntry>>> GetStateEntries() =>
-            Ok(await _mediator.Send(new List.Query()));
+        public async Task<IActionResult> GetStateEntries() =>
+            HandleResult<List<StateEntry>>(await _mediator.Send(new List.Query()));
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<StateEntry>> GetStateEntryById(int id) =>
-            Ok(await _mediator.Send(new Details.Query() { StateEntryId = id }));
+        public async Task<IActionResult> GetStateEntryById(int id) =>
+            HandleResult<StateEntry>(await _mediator.Send(new Details.Query() { StateEntryId = id }));
 
         [HttpPost]
         public async Task<IActionResult> Create(StateEntry StateEntry)
         => Created(string.Empty, await _mediator.Send(new Create.Command() { StateEntry = StateEntry }));
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<StateEntry>> DeleteStateEntryById(int id) =>
-            Ok(await _mediator.Send(new Delete.Command() { StateEntryId = id }));
+        public async Task<IActionResult> DeleteStateEntryById(int id) =>
+            HandleResult<Unit>(await _mediator.Send(new Delete.Command() { StateEntryId = id }));
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<StateEntry>> Edit(StateEntry StateEntry) =>
-            Ok(await _mediator.Send(new Edit.Command() { StateEntry = StateEntry }));
+        public async Task<IActionResult> Edit(int id, StateEntry StateEntry) =>
+             HandleResult<StateEntry>(await _mediator.Send(new Edit.Command() { Id = id, StateEntry = StateEntry }));
     }
 }
