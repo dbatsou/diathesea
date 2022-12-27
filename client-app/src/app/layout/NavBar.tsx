@@ -14,6 +14,9 @@ export default function NavBar() {
         <Menu.Item header as={NavLink} to="/history">
           History
         </Menu.Item>
+        <Menu.Item header as={NavLink} to="/buggy">
+          Buggy
+        </Menu.Item>
         {/* <Menu.Item name="States" /> */}
         {/* <Menu.Item name="History" /> */}
         {/* <Menu.Item name="Activites" /> */}

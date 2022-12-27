@@ -8,6 +8,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import StateEntryInput from "../../features/StateEntries/StateEntryInput";
 import StateEntriesList from "../../features/StateEntries/StateEntriesList";
 import HomePage from "../../features/Homepage/HomePage";
+import TestError from "../../features/errors/TestError";
 
 function App() {
   const { stateEntryStore, stateStore } = useStore();
@@ -34,7 +35,12 @@ function App() {
             path="/state/edit/:id"
             element={<StateEntryInput />}
           />
-          <Route path="/history" element={<StateEntriesList />} />
+          <Route
+            key={location.key}
+            path="/history"
+            element={<StateEntriesList />}
+          />
+          <Route key={location.key} path="/buggy" element={<TestError />} />
         </Routes>
       </Container>
     </>
