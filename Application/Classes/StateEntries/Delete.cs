@@ -7,23 +7,25 @@ namespace Application.StateEntries
 {
     public class Delete
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public int StateEntryId { get; set; }
         }
 
-        public class Handler : BaseHandler, IRequestHandler<Command>
+        public class Handler : BaseHandler, IRequestHandler<Command, Result<Unit>>
         {
             public Handler(DataContext context, IMapper mapper) : base(context, mapper) { }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var stateEntry = await _context.StateEntry.FindAsync(request.StateEntryId);
                 _context.Remove(stateEntry);
 
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
 
-                return Unit.Value;
+                if (!result)
+                    return Result<Unit>.Failure("Failed to delete the activity");
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }
