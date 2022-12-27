@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Storage;
 using MediatR;
-using Application.States;
 using Application.Core;
+using FluentValidation;
 using System.Reflection;
+using Application.StateEntries;
+using FluentValidation.AspNetCore;
+using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,8 @@ const string CORSPolicy = "CorsPolicy";
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<Create>();
 
 builder.Services.AddControllers().AddJsonOptions(jsonOptions =>
                 {
@@ -43,6 +48,9 @@ builder.Services.AddCors(opt =>
 
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseCors(CORSPolicy);
 
 
