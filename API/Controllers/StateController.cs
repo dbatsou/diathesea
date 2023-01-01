@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Application.States;
+using MediatR;
 
 namespace API.Controllers
 {
@@ -8,7 +9,7 @@ namespace API.Controllers
     {
         private readonly ILogger<StateController> _logger;
 
-        public StateController(ILogger<StateController> logger)
+        public StateController(ILogger<StateController> logger, IMediator mediator) :base(mediator)
         {
             _logger = logger;
         }
@@ -18,8 +19,10 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<State>>> GetStates() =>
-            Ok(await _mediator.Send(new List.Query()));
+        public async Task<ActionResult<List<State>>> GetStates()
+        {
+            return Ok(await _mediator.Send(new List.Query()));
+        }
 
         /// <summary>
         /// Returns list of states for the given parent state

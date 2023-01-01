@@ -1,5 +1,6 @@
 using Application.StateEntries;
 using Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,7 +9,7 @@ namespace API.Controllers
     {
         private readonly ILogger<StateEntryController> _logger;
 
-        public StateEntryController(ILogger<StateEntryController> logger)
+        public StateEntryController(ILogger<StateEntryController> logger, IMediator mediator) : base(mediator)
         {
             _logger = logger;
         }
