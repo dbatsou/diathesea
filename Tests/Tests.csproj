@@ -27,4 +27,9 @@
       <ProjectReference Include="..\API\API.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Integration" />
+      <Folder Include="Unit" />
+    </ItemGroup>
+
 </Project>
