@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APILoadTesting", "APILoadTesting\APILoadTesting.csproj", "{9F89391C-058E-4F20-AEDE-BE61A34C6316}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{1F0FE1A7-F735-4F54-A9B6-F77976491BE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{9F89391C-058E-4F20-AEDE-BE61A34C6316}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F89391C-058E-4F20-AEDE-BE61A34C6316}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F89391C-058E-4F20-AEDE-BE61A34C6316}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F0FE1A7-F735-4F54-A9B6-F77976491BE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F0FE1A7-F735-4F54-A9B6-F77976491BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F0FE1A7-F735-4F54-A9B6-F77976491BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F0FE1A7-F735-4F54-A9B6-F77976491BE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
