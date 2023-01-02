@@ -31,4 +31,15 @@ public class IntegrationTest
         Assert.True(response.IsSuccessStatusCode);
         Assert.Equal(108,result.Count);
     }
+
+    [Fact]
+    public void SQLIte_Database_Created()
+    {
+        var sqliteDbPath = Directory.EnumerateFiles(Directory.GetCurrentDirectory(), searchPattern: "*.db").SingleOrDefault();
+        string expectedFilename="diathesea.db";
+
+        var file = new FileInfo(sqliteDbPath);
+
+        Assert.Equal(expectedFilename, file.Name);
+    }
 }
