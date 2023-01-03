@@ -8,6 +8,9 @@ defaults:
     working-directory: client-app
 
 on:
+  workflow_dispatch:
+  
+on:
   push:
     paths:
       - "client-app/**"
