@@ -12,31 +12,21 @@ export default class StateEntryStore {
   }
 
   createOrEditStateEntry = (stateEntry: StateEntry) => {
-    console.log("from createOrEditStateEntry(): ", stateEntry);
     try {
       if (stateEntry.StateEntryId) {
-        console.log("edit");
-
         agent.StateEntries.update(stateEntry)
           .then((response) => {
             if (response.status === 200) this.loadStateEntries();
           })
-          .catch((error) => {
-            console.log(error);
-          });
+          .catch((error) => {});
       } else {
-        console.log("create");
         agent.StateEntries.create(stateEntry)
           .then((response) => {
             if (response.status === 201) this.loadStateEntries();
           })
-          .catch((error) => {
-            console.log(error);
-          });
+          .catch((error) => {});
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   handleDeleteStateEntry = async (id: number) => {
@@ -46,18 +36,14 @@ export default class StateEntryStore {
         await this.loadStateEntries();
         this.setIsSubmitting(false);
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   loadStateEntries = async () => {
     try {
       const entries = await agent.StateEntries.list();
       this.setStateEntries(entries);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   loadStateEntry = async (id: number) => {
@@ -68,9 +54,7 @@ export default class StateEntryStore {
       try {
         let entry = await agent.StateEntries.details(id);
         return entry.data;
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
   };
 
   setLoadingInitial(state: boolean) {
