@@ -1,10 +1,12 @@
 # diathesea
 
-# Build Status
+# Current build status
 
-.NET
+| Service      | State |
+| ----------- | ----------- |
+| API      | ![example workflow](https://github.com/dbatsou/diathesea/actions/workflows/dotnet.yml/badge.svg?branch=main)       |
+| FE   | [![Node.js C5I](https://github.com/dbatsou/diathesea/actions/workflows/feapp.yml/badge.svg?branch=main)](https://github.com/dbatsou/diathesea/actions/workflows/feapp.yml)        |
 
-![example workflow](https://github.com/dbatsou/diathesea/actions/workflows/dotnet.yml/badge.svg)
 
 # Application Settings
 
