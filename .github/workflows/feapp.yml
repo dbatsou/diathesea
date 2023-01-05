@@ -11,6 +11,7 @@ on:
   push:
     paths:
       - "client-app/**"
+  workflow_dispatch:
 
 jobs:
   build:
