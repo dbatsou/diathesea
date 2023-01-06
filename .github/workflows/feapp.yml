@@ -49,4 +49,4 @@ jobs:
           context: "{{defaultContext}}:client-app"
           file: Dockerfile
           push: true
-           tags: ${{ secrets.DOCKERHUB_USERNAME }}/diatheseabe:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/diathesea-be:latest
