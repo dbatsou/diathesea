@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+  be:
+    image: dimitrisba/diathesea-be:latest
+    restart: always
+    ports:
+      - 5000:5000
+  fe:
+    image: dimitrisba/diathesea-fe:latest
+    ports:
+      - 3000:3000
+#TODO I need to check volumes and set the path of the sqlite file in a volume
