@@ -10,3 +10,8 @@
 # Application Settings
 
 DevOptions:DeleteAndRecreateDBOnStartup : bool, Delete and recreate the database file (if one exists)
+
+# Docker
+
+If you want to have a play with the project you can use the [docker-compose-hub.yml](https://github.com/dbatsou/diathesea/blob/main/docker-compose-hub.yml) file to use docker-compose and get the services up and running.
+Volumes are not supported atm. will be soon
