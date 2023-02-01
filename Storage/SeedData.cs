@@ -6,7 +6,6 @@ namespace Storage
     {
         public static async Task SeedData(DataContext context)
         {
-
             if (!context.State.Any())
                 await context.State.AddRangeAsync(SeedStates());
 
@@ -14,9 +13,6 @@ namespace Storage
 
             if (!context.StateEntry.Any())
                 await context.StateEntry.AddRangeAsync(SeedStateEntries());
-
-            if (!context.User.Any())
-                await context.User.AddAsync(SeedUser());
 
             await context.SaveChangesAsync();
         }
@@ -199,8 +195,6 @@ namespace Storage
             };
             return states;
         }
-
-        static User SeedUser() => new User() { Username = "dimi", Password = "dimi", DisplayName = "Dimitrios" };
 
     }
 }
