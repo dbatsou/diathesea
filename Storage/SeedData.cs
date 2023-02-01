@@ -2,7 +2,7 @@ using Domain.Entities;
 
 namespace Storage
 {
-    public class Seed
+    public static class Seed
     {
         public static async Task SeedData(DataContext context)
         {
@@ -14,6 +14,9 @@ namespace Storage
 
             if (!context.StateEntry.Any())
                 await context.StateEntry.AddRangeAsync(SeedStateEntries());
+
+            if (!context.User.Any())
+                await context.User.AddAsync(SeedUser());
 
             await context.SaveChangesAsync();
         }
@@ -197,6 +200,7 @@ namespace Storage
             return states;
         }
 
+        static User SeedUser() => new User() { Username = "dimi", Password = "dimi", DisplayName = "Dimitrios" };
 
     }
 }
