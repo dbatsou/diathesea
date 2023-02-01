@@ -14,6 +14,7 @@ namespace Storage
 
         public DbSet<State> State { get; set; }
         public DbSet<StateEntry> StateEntry { get; set; }
+        public DbSet<User> User { get; set; }
 
         public override int SaveChanges()
         {
