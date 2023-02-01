@@ -1,14 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using Storage;
 using MediatR;
-using Application.States;
 using Application.Core;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 const string CORSPolicy = "CorsPolicy";
 // Add services to the container.
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+  .AddCookie(options =>
+  {
+      options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+      options.SlidingExpiration = true;
+      options.AccessDeniedPath = "/Forbidden/";
+  });
+
 
 builder.Services.AddControllers();
 
@@ -56,10 +65,14 @@ await RecreateDatabase(builder.Configuration.GetValue<bool>("DevOptions:DeleteAn
 
 app.UseHttpsRedirection();
 
+var cookiePolicyOptions = new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+};
+app.UseCookiePolicy(cookiePolicyOptions);
+app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapControllers();
-app.MapGet("/", () => "Hello World!");
+app.MapControllers().RequireAuthorization();
 
 app.Run();
 
