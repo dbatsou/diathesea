@@ -5,6 +5,7 @@ using Application.Core;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Common.Services;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +74,8 @@ var cookiePolicyOptions = new CookiePolicyOptions
 app.UseCookiePolicy(cookiePolicyOptions);
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapGet("/", [AllowAnonymous] () => "Hello World!");
+
 app.MapControllers().RequireAuthorization();
 
 app.Run();
