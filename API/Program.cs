@@ -4,6 +4,7 @@ using MediatR;
 using Application.Core;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Common.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +51,7 @@ builder.Services.AddCors(opt =>
                 });
             });
 
-
+builder.Services.AddTransient<IPasswordService, PasswordService>();
 var app = builder.Build();
 app.UseCors(CORSPolicy);
 
