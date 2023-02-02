@@ -28,8 +28,7 @@ namespace Application.User
                 if (_context.User.Any())
                     return null;
 
-                byte[] passwordHash, passwordSalt;
-                _passwordService.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+                _passwordService.CreatePasswordHash(request.Password, out var passwordHash, out var passwordSalt);
 
                 var user = new Domain.Entities.User()
                 {
