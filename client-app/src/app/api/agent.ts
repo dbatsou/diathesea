@@ -52,6 +52,7 @@ const User = {
 
   login: (authModel: AuthenticationModel) =>
     axios.post<void>(`/${userUri}`, authModel),
+  logout: () => axios.post<void>(`/${userUri}/logout`),
 };
 
 const agent = {

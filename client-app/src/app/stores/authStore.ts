@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { useLocation } from "react-router-dom";
 import agent from "../api/agent";
 import { AuthenticationModel } from "../models/authenticationModel";
 
@@ -21,6 +22,14 @@ export default class AuthStore {
   register = (authModel: AuthenticationModel) => {
     try {
       agent.User.register(authModel)
+        .then((response) => {})
+        .catch((error) => {});
+    } catch {}
+  };
+
+  logout = () => {
+    try {
+      agent.User.logout()
         .then((response) => {})
         .catch((error) => {});
     } catch {}
