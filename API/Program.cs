@@ -17,7 +17,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
   {
       options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
       options.SlidingExpiration = true;
-      options.AccessDeniedPath = "/Forbidden/";
+      options.LoginPath = "/login/";
+      options.Events.OnRedirectToLogin = (context) =>
+      {
+          context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+          return Task.CompletedTask;
+      };
+      options.Cookie.HttpOnly = true;
+
   });
 
 
@@ -48,7 +55,7 @@ builder.Services.AddCors(opt =>
             {
                 opt.AddPolicy(CORSPolicy, policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000").AllowCredentials();
                 });
             });
 
@@ -69,7 +76,8 @@ app.UseHttpsRedirection();
 
 var cookiePolicyOptions = new CookiePolicyOptions
 {
-    MinimumSameSitePolicy = SameSiteMode.Strict,
+    MinimumSameSitePolicy = SameSiteMode.Strict
+
 };
 app.UseCookiePolicy(cookiePolicyOptions);
 app.UseAuthentication();
@@ -77,6 +85,7 @@ app.UseAuthorization();
 app.MapGet("/", [AllowAnonymous] () => "Hello World!");
 
 app.MapControllers().RequireAuthorization();
+// app.MapControllers();
 
 app.Run();
 
