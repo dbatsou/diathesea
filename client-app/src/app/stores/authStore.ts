@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { useLocation } from "react-router-dom";
 import agent from "../api/agent";
 import { AuthenticationModel } from "../models/authenticationModel";
 
@@ -19,7 +18,7 @@ export default class AuthStore {
     this.isLoggedIn = state;
   }
 
-  register = (authModel: AuthenticationModel) => {
+  register = async (authModel: AuthenticationModel) => {
     try {
       agent.User.register(authModel)
         .then((response) => {})
@@ -27,18 +26,31 @@ export default class AuthStore {
     } catch {}
   };
 
-  logout = () => {
+  signedin = async () => {
     try {
-      agent.User.logout()
-        .then((response) => {})
+      agent.User.signedin()
+        .then((response) => {
+          if (response.status === 200 && response.data)
+            this.setIsLoggedIn(true);
+        })
         .catch((error) => {});
     } catch {}
   };
 
-  login = (authModel: AuthenticationModel) => {
+  logout = async () => {
+    try {
+      agent.User.logout()
+        .then((response) => {
+          if (response.status === 200) this.setIsLoggedIn(false);
+        })
+        .catch((error) => {});
+    } catch {}
+  };
+
+  login = async (authModel: AuthenticationModel) => {
     agent.User.login(authModel)
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           this.setIsLoggedIn(true);
         }
       })
