@@ -54,6 +54,7 @@ const User = {
   login: (authModel: AuthenticationModel) =>
     axios.post<void>(`/${userUri}`, authModel),
   logout: () => axios.post<void>(`/${userUri}/logout`),
+  signedin: () => axios.post<boolean>(`/${userUri}/signedin`),
 };
 
 const agent = {
