@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { AuthenticationModel } from "../models/authenticationModel";
 import { State } from "../models/state";
 import { StateEntry } from "../models/stateEntry";
 
@@ -44,9 +45,19 @@ const StateEntries = {
     axios.put<void>(`/${stateEntryUri}/${stateEntry.StateEntryId}`, stateEntry),
 };
 
+const userUri = "user";
+const User = {
+  register: (authModel: AuthenticationModel) =>
+    axios.post<void>(`/${userUri}/register`, authModel),
+
+  login: (authModel: AuthenticationModel) =>
+    axios.post<void>(`/${userUri}`, authModel),
+};
+
 const agent = {
   StateEntries,
   States,
+  User,
 };
 
 export default agent;
