@@ -10,6 +10,7 @@ import { StateEntry } from "../models/stateEntry";
 // };
 
 axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.withCredentials = true;
 
 // axios.interceptors.response.use(async (response) => {
 //   try {
