@@ -20,8 +20,8 @@ namespace Storage
         private static List<StateEntry> SeedStateEntries()
         => new List<StateEntry>()
         {
-            new StateEntry() {StateId=1,  Note = "today was meh"   },
-            new StateEntry() {StateId=2,  Note = "yesterday also meh"  },
+            new StateEntry() {Date =  DateTime.Now, StateId=1,  Note = "today was meh"   },
+            new StateEntry() {Date =  DateTime.Now, StateId=2,  Note = "yesterday also meh"  },
         };
 
         static List<State> SeedStates()
