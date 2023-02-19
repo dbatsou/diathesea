@@ -3,7 +3,7 @@ import agent from "../api/agent";
 import { StateFormFormatted } from "../models/state";
 
 export default class StateStore {
-  loadingInitial = true;
+  loadingInitial = false;
   states: StateFormFormatted[] = [];
   constructor() {
     makeAutoObservable(this);
@@ -11,6 +11,8 @@ export default class StateStore {
 
   loadStates = async () => {
     try {
+      this.setLoadingInitial(true);
+
       const states = await agent.States.list();
       states.forEach((value) => {
         this.states.push({
