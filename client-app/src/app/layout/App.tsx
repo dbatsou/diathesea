@@ -8,13 +8,20 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import StateEntryInput from "../../features/StateEntries/StateEntryInput";
 import StateEntriesList from "../../features/StateEntries/StateEntriesList";
 import HomePage from "../../features/Homepage/HomePage";
+import Login from "../../features/Login/Login";
+import Register from "../../features/Register/Register";
 
 function App() {
-  const { stateEntryStore, stateStore } = useStore();
+  const { stateEntryStore, stateStore, authStore } = useStore();
+  const { isLoggedIn, signedin } = authStore;
+
   const location = useLocation();
   useEffect(() => {
-    stateStore.loadStates();
-  }, [stateStore]);
+    if (!isLoggedIn) signedin();
+    if (isLoggedIn) {
+      stateStore.loadStates();
+    }
+  }, [stateStore, isLoggedIn]);
 
   if (stateEntryStore.loadingInitial || stateStore.loadingInitial)
     return <LoadingComponent />;
@@ -23,7 +30,9 @@ function App() {
       <NavBar />
       <Container style={{ marginTop: "4em" }}>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} key={location.key} />
+          <Route path="/login" element={<Login />} key={location.key} />
+          <Route path="/register" element={<Register />} key={location.key} />
           <Route
             key={location.key}
             path="/state/new"
@@ -34,7 +43,11 @@ function App() {
             path="/state/edit/:id"
             element={<StateEntryInput />}
           />
-          <Route path="/history" element={<StateEntriesList />} />
+          <Route
+            path="/history"
+            element={<StateEntriesList />}
+            key={location.key}
+          />
         </Routes>
       </Container>
     </>
