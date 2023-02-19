@@ -1,20 +1,24 @@
-import { NavLink } from "react-router-dom";
-import { Container, Grid, Menu, Segment } from "semantic-ui-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Container, Menu } from "semantic-ui-react";
 import { useStore } from "../stores/store";
 import Utils from "../helpers/visibilityHelper";
 import { observer } from "mobx-react-lite";
 export default observer(function NavBar() {
   const { authStore } = useStore();
-  const { isLoggedIn } = authStore;
+  const { isLoggedIn, logout } = authStore;
+  const navigate = useNavigate();
 
+  function handleLogout() {
+    logout();
+    navigate("/");
+  }
   return (
     <Container>
       <Menu size="large" inverted fixed="top">
-        <Menu.Item header as={NavLink} to="/">
+        <Menu.Item header as={NavLink} to={isLoggedIn ? "/history" : "/"}>
           diathesea
         </Menu.Item>
         <Menu.Item
-          header
           as={NavLink}
           to="/state/new"
           style={{ display: Utils.isVisible(isLoggedIn) }}
@@ -22,7 +26,6 @@ export default observer(function NavBar() {
           New
         </Menu.Item>
         <Menu.Item
-          header
           as={NavLink}
           to="/history"
           style={{ display: Utils.isVisible(isLoggedIn) }}
@@ -30,8 +33,8 @@ export default observer(function NavBar() {
           History
         </Menu.Item>
         <Menu.Item
-          header
-          as={NavLink}
+          // as={NavLink}
+          onClick={handleLogout}
           style={{ display: Utils.isVisible(isLoggedIn) }}
         >
           Logout

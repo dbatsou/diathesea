@@ -2,18 +2,18 @@ import { observer } from "mobx-react-lite";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
-import { RegisterModel } from "../../app/models/registerModel";
+import { AuthenticationModel } from "../../app/models/authenticationModel";
 import { useStore } from "../../app/stores/store";
 
-export default observer(function Register() {
+export default observer(function Login() {
   const { authStore } = useStore();
-  const { register } = authStore;
-  const [registerModel, setRegisterModel] = useState<RegisterModel>();
+  const { login } = authStore;
+  const [authModel, setAuthModel] = useState<AuthenticationModel>();
   const navigate = useNavigate();
 
   async function onSubmit() {
-    await register(registerModel!);
-    navigate("/login");
+    await login(authModel!);
+    navigate("/history");
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -22,8 +22,8 @@ export default observer(function Register() {
   }
 
   function handleSetAuthModel(name: string, value: string) {
-    setRegisterModel({
-      ...registerModel,
+    setAuthModel({
+      ...authModel,
       [name]: value,
     });
   }
@@ -32,7 +32,7 @@ export default observer(function Register() {
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" textAlign="center">
-          Register your account
+          Log-in to your account
         </Header>
         <Form size="large" onSubmit={onSubmit}>
           <Segment stacked>
@@ -54,18 +54,8 @@ export default observer(function Register() {
               onChange={handleInputChange}
             />
 
-            <Form.Input
-              fluid
-              icon="lock"
-              iconPosition="left"
-              placeholder="Verify Password"
-              type="password"
-              name="repeatpassword"
-              onChange={handleInputChange}
-            />
-
-            <Button color="green" fluid size="large" disabled={false}>
-              Register
+            <Button color="green" fluid size="large" type="submit">
+              Login
             </Button>
           </Segment>
         </Form>
