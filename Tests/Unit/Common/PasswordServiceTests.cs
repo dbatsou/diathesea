@@ -55,6 +55,14 @@ namespace Tests.Unit.Common
         public void VerifyPasswordHash_ThrowsArgumentException_WhenPasswordHash_IsInvalid() => Assert.Throws<ArgumentException>(() => _service.VerifyPasswordHash(_password, OneByteArray, OneByteArray));
 
         [Fact]
-        public void VerifyPasswordHash_ThrowsArgumentException_WhenPasswordSalt_IsInvalid() => Assert.Throws<ArgumentException>(() => _service.VerifyPasswordHash(_password, new byte[64], OneByteArray));
+        public void VerifyPasswordHash_ThrowsArgumentException_WhenPasswordSalt_IsInvalid()
+        {
+            var passwordHashed = new byte[64];
+            
+            Assert.Throws<ArgumentException>(() => _service.VerifyPasswordHash(_password, passwordHashed, OneByteArray));
+        }
+        
+        
+        
     }
 }

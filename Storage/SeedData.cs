@@ -6,6 +6,7 @@ namespace Storage
     {
         public static async Task SeedData(DataContext context)
         {
+
             if (!context.State.Any())
                 await context.State.AddRangeAsync(SeedStates());
 
@@ -14,14 +15,17 @@ namespace Storage
             if (!context.StateEntry.Any())
                 await context.StateEntry.AddRangeAsync(SeedStateEntries());
 
+            if (!context.User.Any())
+                await context.User.AddAsync(SeedUser());
+
             await context.SaveChangesAsync();
         }
 
         private static List<StateEntry> SeedStateEntries()
         => new List<StateEntry>()
         {
-            new StateEntry() {Date =  DateTime.Now, StateId=1,  Note = "today was meh"   },
-            new StateEntry() {Date =  DateTime.Now, StateId=2,  Note = "yesterday also meh"  },
+            new StateEntry() {StateId=1,  Note = "today was meh"   },
+            new StateEntry() {StateId=2,  Note = "yesterday also meh"  },
         };
 
         static List<State> SeedStates()
@@ -195,6 +199,8 @@ namespace Storage
             };
             return states;
         }
+
+        static User SeedUser() => new User() { Username = "dimi", Password = "dimi", DisplayName = "Dimitrios" };
 
     }
 }

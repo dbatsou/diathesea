@@ -5,7 +5,6 @@ using Application.Core;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Common.Services;
-using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,14 +16,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
   {
       options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
       options.SlidingExpiration = true;
-      options.LoginPath = "/login/";
-      options.Events.OnRedirectToLogin = (context) =>
-      {
-          context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-          return Task.CompletedTask;
-      };
-      options.Cookie.HttpOnly = true;
-
+      options.AccessDeniedPath = "/Forbidden/";
   });
 
 
@@ -55,7 +47,7 @@ builder.Services.AddCors(opt =>
             {
                 opt.AddPolicy(CORSPolicy, policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000").AllowCredentials();
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
                 });
             });
 
@@ -76,16 +68,12 @@ app.UseHttpsRedirection();
 
 var cookiePolicyOptions = new CookiePolicyOptions
 {
-    MinimumSameSitePolicy = SameSiteMode.Strict
-
+    MinimumSameSitePolicy = SameSiteMode.Strict,
 };
 app.UseCookiePolicy(cookiePolicyOptions);
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapGet("/", [AllowAnonymous] () => "Hello World!");
-
 app.MapControllers().RequireAuthorization();
-// app.MapControllers();
 
 app.Run();
 

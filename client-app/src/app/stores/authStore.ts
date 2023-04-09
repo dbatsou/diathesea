@@ -18,7 +18,7 @@ export default class AuthStore {
     this.isLoggedIn = state;
   }
 
-  register = async (authModel: AuthenticationModel) => {
+  register = (authModel: AuthenticationModel) => {
     try {
       agent.User.register(authModel)
         .then((response) => {})
@@ -26,31 +26,10 @@ export default class AuthStore {
     } catch {}
   };
 
-  signedin = async () => {
-    try {
-      agent.User.signedin()
-        .then((response) => {
-          if (response.status === 200 && response.data)
-            this.setIsLoggedIn(true);
-        })
-        .catch((error) => {});
-    } catch {}
-  };
-
-  logout = async () => {
-    try {
-      agent.User.logout()
-        .then((response) => {
-          if (response.status === 200) this.setIsLoggedIn(false);
-        })
-        .catch((error) => {});
-    } catch {}
-  };
-
-  login = async (authModel: AuthenticationModel) => {
+  login = (authModel: AuthenticationModel) => {
     agent.User.login(authModel)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status == 200) {
           this.setIsLoggedIn(true);
         }
       })
