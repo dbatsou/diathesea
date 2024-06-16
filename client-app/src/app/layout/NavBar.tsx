@@ -18,6 +18,14 @@ export default observer(function NavBar() {
         <Menu.Item header as={NavLink} to={isLoggedIn ? "/history" : "/"}>
           diathesea
         </Menu.Item>
+
+        <Menu.Item
+          as={NavLink}
+          to="/register"
+          style={{ display: Utils.isVisible(!isLoggedIn) }}
+        >
+          Register
+        </Menu.Item>
         <Menu.Item
           as={NavLink}
           to="/state/new"
