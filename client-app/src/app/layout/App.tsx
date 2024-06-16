@@ -9,6 +9,7 @@ import StateEntryInput from "../../features/StateEntries/StateEntryInput";
 import StateEntriesList from "../../features/StateEntries/StateEntriesList";
 import HomePage from "../../features/Homepage/HomePage";
 import Login from "../../features/Login/Login";
+import Register from "../../features/Register/Register";
 
 function App() {
   const { stateEntryStore, stateStore, authStore } = useStore();
@@ -31,6 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} key={location.key} />
           <Route path="/login" element={<Login />} key={location.key} />
+          <Route path="/register" element={<Register />} key={location.key} />
           <Route
             key={location.key}
             path="/state/new"
